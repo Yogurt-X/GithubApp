@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import DataRepository from '../expand/dao/DataRepository';
@@ -27,7 +28,19 @@ export default class PopularPage extends Component {
           title="最热"
           statusBar={{ backgroundColor: '#2196F3' }}
         />
-        <ScrollableTabView renderTabBar={() => <ScrollableTabBar />}>
+        <ScrollableTabView
+          tabBarBackgroundColor="#2196F3"
+          tabBarInactiveTextColor="mintcream"
+          tabBarActiveTextColor="white"
+          tabBarUnderlineStyle={{ backgroundColor: '#e7e7e7', height: 2 }}
+          initialPage={0}
+          // renderTabBar={() => (
+          //   <ScrollableTabBar
+          //     style={{ height: 40, borderWidth: 0, elevation: 2 }}
+          //     tabStyle={{ height: 39 }}
+          //   />
+          // )}
+        >
           <PopularTab tabLabel="Java">
             JAVA
           </PopularTab>
@@ -45,13 +58,13 @@ export default class PopularPage extends Component {
     );
   }
 }
-
 class PopularTab extends Component {
   constructor(props) {
     super(props);
     this.dataRepository = new DataRepository();
     this.state = {
       result: '',
+      isLoading: false,
     };
   }
 
@@ -59,32 +72,26 @@ class PopularTab extends Component {
     this.loadData();
   }
 
-  loadData() {
+  loadData = () => {
+    this.setState({ isLoading: true });
     const url = this.genFetchUrl(this.props.tabLabel);
+    this.dataRepository
+      .fetchNetRepository(url)
+      .then((result) => {
+        console.log(result);
+        this.setState({
+          result,
+          isLoading: false,
+        });
+      });
   }
 
   genFetchUrl(key) {
     return URL + key + QUERY_STR;
   }
 
-  _renderItem(item) {
-    return (
-      <View>
-        <Text>
-          {item.full_name}
-        </Text>
-        <Text>
-          {item.description}
-        </Text>
-        <Text>
-          {item.owner.avatar_url}
-        </Text>
-        <Text>
-          {item.stargazers_count}
-        </Text>
-
-      </View>
-    );
+  _renderItem({ item }) {
+    return <RepositoryCell data={item} />;
   }
 
   onSelectRepository=(item) => {
@@ -92,21 +99,30 @@ class PopularTab extends Component {
   }
 
   render() {
-    const { result } = this.state;
+    const { result, isLoading } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={{ height: 600 }}>
-          {result}
-        </Text>
-        {/* <FlatList
+        <FlatList
           automaticallyAdjustContentInsets={false}
           // 用于生成key,默认情况下每行都需要提供一个不重复的key属性。
-          keyExtractor={(item, index) => index}
-          data={this.state.result}
+          keyExtractor={item => item.node_id}
+          data={result}
           renderItem={this._renderItem.bind(this)}
           // 行与行之间的分隔线组件
-          ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
-        /> */}
+          // ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
+          refreshControl={(
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={this.loadData}
+                // 刷新指示器的背景色 android
+              colors={['#2196F3']}
+                // ios
+              tintColor="#2196F3"
+              title="加载中..."
+              titleColor="#2196F3"
+            />
+          )}
+        />
       </View>
     );
   }

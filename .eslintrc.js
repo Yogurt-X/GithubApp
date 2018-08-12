@@ -24,6 +24,7 @@ module.exports = {
         'no-unused-expressions': 0,
         'react/require-default-props': 0,
         "react/jsx-no-bind": 0,
-        "no-underscore-dangle": 0
+        "no-underscore-dangle": 0,
+        "no-lonely-if": 0
     }
 };

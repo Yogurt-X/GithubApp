@@ -1,15 +1,25 @@
 import React from 'react';
 import { TabNavigator } from 'react-navigation';
+import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import PopularPage from './PopularPage';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
+
+const Page = () => (
+  <View>
+    <Text>
+    其他
+    </Text>
+  </View>
+);
+
 export default TabNavigator(
   {
     最热: PopularPage,
-    趋势: PopularPage,
-    收藏: PopularPage,
-    我的: PopularPage,
+    趋势: Page,
+    收藏: Page,
+    我的: Page,
   },
   {
     navigationOptions: ({ navigation }) => ({
