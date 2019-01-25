@@ -1,27 +1,32 @@
-import { createStackNavigator, SwitchNavigator } from 'react-navigation'; // Version can be specified in package.json
+import { createStackNavigator } from 'react-navigation'; // Version can be specified in package.json
 import WelcomePage from './WelcomePage';
 import HomePage from './HomePage';
-import PopularPage from './PopularPage';
+import CustomKeyPage from './my/CustomKeyPage';
 
 const MainStack = createStackNavigator(
-  {
-    Home: {
-      screen: HomePage,
-      navigationOptions: () => ({
-        header: null,
-      }),
+    {
+        Home: {
+            screen: HomePage,
+            navigationOptions: () => ({
+                header: null,
+            }),
+        },
+        Welcome: {
+            screen: WelcomePage,
+            navigationOptions: () => ({
+                header: null,
+            }),
+        },
+        Custom: {
+            screen: CustomKeyPage,
+            navigationOptions: () => ({
+                header: null,
+            }),
+        },
     },
-    Welcome: WelcomePage,
-    Popular: PopularPage,
-  },
+    {
+        initialRouteName: 'Welcome',
+    },
 );
 
-export default SwitchNavigator(
-  {
-    Main: MainStack,
-    Welcome: WelcomePage,
-  },
-  {
-    initialRouteName: 'Welcome',
-  },
-);
+export default MainStack;

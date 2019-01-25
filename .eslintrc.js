@@ -25,6 +25,9 @@ module.exports = {
         'react/require-default-props': 0,
         "react/jsx-no-bind": 0,
         "no-underscore-dangle": 0,
-        "no-lonely-if": 0
+        "no-lonely-if": 0,
+        "indent": ["error", 4],
+        "react/jsx-indent": 0,
+        "react/jsx-indent-props": 0
     }
 };
