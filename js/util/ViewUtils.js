@@ -13,7 +13,6 @@ export default class ViewUtils {
             >
                 <Image
                     style={{ width: 26, height: 26 }}
-                    // eslint-disable-next-line
                     source={require('../../res/images/ic_arrow_back_white_36pt.png')}
                 />
             </TouchableOpacity>
