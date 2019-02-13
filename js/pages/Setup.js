@@ -2,6 +2,7 @@ import { createStackNavigator } from 'react-navigation'; // Version can be speci
 import WelcomePage from './WelcomePage';
 import HomePage from './HomePage';
 import CustomKeyPage from './my/CustomKeyPage';
+import SortKeyPage from './my/SortKeyPage';
 
 const MainStack = createStackNavigator(
     {
@@ -19,6 +20,12 @@ const MainStack = createStackNavigator(
         },
         Custom: {
             screen: CustomKeyPage,
+            navigationOptions: () => ({
+                header: null,
+            }),
+        },
+        Sort: {
+            screen: SortKeyPage,
             navigationOptions: () => ({
                 header: null,
             }),

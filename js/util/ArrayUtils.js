@@ -24,4 +24,15 @@ export default class ArrayUtils {
             if (item === array[i])array.splice(i, 1);
         }
     }
+
+    /**
+     * 判断两个数组的元素是否一一对应
+     * @param {*} arr1
+     * @param {*} arr2
+     */
+    static isEqual(arr1, arr2) {
+        if (!(arr1 && arr2)) return false;
+        if (arr1.length !== arr2.length) return false;
+        return arr2.every((item, i) => item === arr1[i]);
+    }
 }

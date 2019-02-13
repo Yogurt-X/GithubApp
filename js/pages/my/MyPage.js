@@ -22,7 +22,15 @@ export default class MyPage extends PureComponent {
                         this.props.navigation.push('Custom');
                     }}
                 >
-        自定义标签
+                自定义标签
+                </Text>
+                <Text
+                    style={styles.tips}
+                    onPress={() => {
+                        this.props.navigation.push('Sort');
+                    }}
+                >
+                标签排序
                 </Text>
             </View>);
     }
