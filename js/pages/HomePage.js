@@ -2,6 +2,8 @@ import React from 'react';
 import { TabNavigator } from 'react-navigation';
 import { View, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as Progress from 'react-native-progress';
+
 import PopularPage from './PopularPage';
 import MyPage from './my/MyPage';
 
@@ -10,6 +12,8 @@ const Page = () => (
         <Text>
         其他
         </Text>
+        <Progress.Bar progress={0.3} width={200} />
+        <Progress.Pie progress={0.4} size={50} />
     </View>
 );
 

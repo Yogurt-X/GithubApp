@@ -18,9 +18,11 @@ export default class CustomKeyPage extends Component {
     constructor(props) {
         super(props);
         this.languageDao = new LanguageDao(FLAG_LANGUAGE.flag_key);
-        this.changeValues = [];
+        // 是否为标签移除
+        this.isRemoveKey = !!this.props.navigation.getParam('isRemoveKey');
         this.state = {
             dataArray: [],
+            changeValues: [],
         };
     }
 
@@ -41,9 +43,13 @@ export default class CustomKeyPage extends Component {
     }
 
     onSave() {
-        if (this.changeValues.length === 0) {
+        if (this.state.changeValues.length === 0) {
             this.props.navigation.pop();
             return;
+        }
+        // 这里remove之后就直接退出了，所以不setState也没啥关系。
+        for (let i = 0, l = this.state.changeValues.length; i < l; i++) {
+            ArrayUtils.remove(this.state.dataArray, this.state.changeValues[i]);
         }
         this.languageDao.save(this.state.dataArray);
         this.props.navigation.pop();
@@ -86,7 +92,7 @@ export default class CustomKeyPage extends Component {
 
     renderCheckBox(data, index) {
         const leftText = data.name;
-        const isChecked = this.isRemoveKey ? false : data.checked;
+        const isChecked = this.isRemoveKey ? this.state.changeValues.indexOf(data) > -1 : data.checked;
         return (
             <CheckBox
                 style={{ flex: 1, padding: 10 }}
@@ -105,19 +111,23 @@ export default class CustomKeyPage extends Component {
     }
 
     onClick(data, index) {
-        const item = Object.assign({}, data, {
-            checked: !data.checked,
-        });
-        let { dataArray } = this.state;
-        dataArray.splice(index, 1, item);
-        this.setState({
-            dataArray,
-        });
-        ArrayUtils.updateArray(this.changeValues, item);
+        if (!this.isRemoveKey) {
+            const item = Object.assign({}, data, {
+                checked: !data.checked,
+            });
+            let { dataArray } = this.state;
+            dataArray.splice(index, 1, item);
+            this.setState({
+                dataArray,
+            });
+        }
+        let { changeValues } = this.state;
+        let newData = ArrayUtils.updateArray(changeValues, data, 'name');
+        this.setState({ changeValues: newData });
     }
 
     onBack() {
-        if (this.changeValues.length === 0) {
+        if (this.state.changeValues.length === 0) {
             this.props.navigation.pop();
             return;
         }
@@ -137,22 +147,15 @@ export default class CustomKeyPage extends Component {
     }
 
     render() {
-        const rightButton = (
-            <TouchableOpacity onPress={() => this.onSave()}>
-                <View style={{ margin: 10 }}>
-                    <Text style={styles.title}>
-                    保存
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        );
+        let title = this.isRemoveKey ? '标签排序' : '自定义标签';
+        let rightButtonTitle = this.isRemoveKey ? '移除' : '保存';
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title="自定义标签"
+                    title={title}
                     style={{ backgroundColor: '#6495ED' }}
                     leftButton={ViewUtils.getLeftButton(() => this.onBack())}
-                    rightButton={rightButton}
+                    rightButton={ViewUtils.getRightButton(rightButtonTitle, () => this.onSave())}
                 />
                 <ScrollView>
                     {this.renderView()}

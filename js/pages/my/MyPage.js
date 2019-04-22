@@ -32,6 +32,16 @@ export default class MyPage extends PureComponent {
                 >
                 标签排序
                 </Text>
+                <Text
+                    style={styles.tips}
+                    onPress={() => {
+                        this.props.navigation.push('Custom', {
+                            isRemoveKey: true,
+                        });
+                    }}
+                >
+                标签移除
+                </Text>
             </View>);
     }
 }

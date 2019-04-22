@@ -47,6 +47,7 @@ export default class SortKeyPage extends Component {
         this.dataArray = result;
         let checkedArray = result.filter(data => data.checked);
         this.setState({ checkedArray });
+        // 由于只是改变了数组元素顺序而不是改变元素中的某个值，所以这里使用浅拷贝的concat没有影响。
         this.originalCheckedArray = checkedArray.concat([]);
     }
 

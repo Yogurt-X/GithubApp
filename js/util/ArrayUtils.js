@@ -4,15 +4,16 @@ export default class ArrayUtils {
      * @param {*} array
      * @param {*} item
      */
-    static updateArray(array, item) {
+    static updateArray(array, item, key) {
         for (let i = 0, len = array.length; i < len; i++) {
             const temp = array[i];
-            if (item === temp) {
-                array.slice(i, 1);
-                return;
+            if (item[key] === temp[key]) {
+                array.splice(i, 1);
+                return array;
             }
         }
         array.push(item);
+        return array;
     }
 
     /**
@@ -21,7 +22,7 @@ export default class ArrayUtils {
     static remove(array, item) {
         if (!array) return;
         for (let i = 0, l = array.length; i < l; i++) {
-            if (item === array[i])array.splice(i, 1);
+            if (item === array[i]) array.splice(i, 1);
         }
     }
 

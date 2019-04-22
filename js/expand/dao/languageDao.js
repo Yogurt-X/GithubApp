@@ -11,11 +11,13 @@ export default class LanguageDao {
 
     fetch() {
         return new Promise((resolve, reject) => {
+            // AsyncStorage.clear();
             AsyncStorage.getItem(this.flag, (error, result) => {
                 if (error) {
                     reject(error);
                 } else {
                     if (result) {
+                        console.log('getItem', result);
                         try {
                             resolve(JSON.parse(result));
                         } catch (e) {
